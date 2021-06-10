@@ -265,7 +265,7 @@ def main():
     print("Quis DAA E 2021 - 8 Puzzle Solver\n")
 
     # User can input InitialState
-    InitialState = [8,6,4,2,1,3,5,7,0]
+    InitialState = [int(x) for x in input("Enter initial state: ").split()]
 
     print('= GOAL STATE =')
     printState(GoalState)
