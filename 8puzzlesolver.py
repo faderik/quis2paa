@@ -49,7 +49,27 @@ def bfs(startState):
 
 # DFS Algorithm
 def dfs(startState):
-    # tobe continued
+    
+    global MaxFrontier, GoalNode, MaxSearchDeep
+
+    boardVisited = set()
+    stack = list([PuzzleState(startState, None, None, 0, 0, 0)])
+    while stack:
+        node = stack.pop()
+        boardVisited.add(node.map)
+        if node.state == GoalState:
+            GoalNode = node
+            return stack
+        #inverse the order of next paths for execution porpuses
+        posiblePaths = reversed(subNodes(node))
+        for path in posiblePaths:
+            if path.map not in boardVisited:
+                stack.append(path)
+                boardVisited.add(path.map)
+                if path.depth > MaxSearchDeep:
+                    MaxSearchDeep = 1 + MaxSearchDeep
+        if len(stack) > MaxFrontier:
+            MaxFrontier = len(stack)
 
 # Obtain Sub Nodes 
 def subNodes(node):
@@ -224,7 +244,21 @@ def printState(state):
     print("+---+---+---+")
 
 def prinReq(node):
-    # tobe continued
+    global Moves
+    if node.parent is None :
+      return
+    prinReq(node.parent)
+    if(node.move == 1):
+      print("## UP ")
+    elif(node.move == 2):
+      print("## DOWN ")
+    elif(node.move == 3):
+      print("## LEFT ")
+    elif(node.move == 4):
+      print("## RIGHT ")
+    printState(node.state)
+    print("      V")
+    Moves = Moves + 1
 
 # Main Driver Program
 def main():
@@ -255,7 +289,7 @@ def main():
 
     print("+++++++++++ PROCESS TO GOAL +++++++++++++++")
     print()
-    # prinReq(GoalNode)
+    prinReq(GoalNode)
     print()
     print("++++++++++++++++ RESULT ++++++++++++++++++++")
     print("Number of Moves : ", str(Moves))
